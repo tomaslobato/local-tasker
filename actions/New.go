@@ -75,10 +75,6 @@ func New(args []string) {
 
 	newTasks := append(actualTasks, newTask)
 	utils.SaveTasks(newTasks)
-	if err != nil {
-		fmt.Println("Error saving new task: ", err)
-		return
-	}
 
 	fmt.Printf(`new task "%s, Date: %d" added successfully`, newTaskTitle, timestamp)
 }
