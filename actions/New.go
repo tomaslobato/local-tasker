@@ -1,9 +1,7 @@
 package actions
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
 	"strings"
 	"time"
 
@@ -12,15 +10,10 @@ import (
 )
 
 func New(args []string) {
-	//get tasks
-	var actualTasks []models.Task
-	actualTasks, err := utils.GetTasks()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
+	// Get tasks
+	actualTasks := utils.GetTasks()
 
-	//get lastTaskId
+	// Get lastTaskId
 	var lastTaskId uint
 	if len(actualTasks) > 0 {
 		lastTaskId = actualTasks[len(actualTasks)-1].Id
@@ -28,24 +21,23 @@ func New(args []string) {
 
 	if len(args) < 3 {
 		fmt.Println("Please use lt new <task title> --date <01/02/06>")
+		return
 	}
 
 	var TaskTitle strings.Builder
 	var dateFound bool
 	var dateString string
 
-	//looping over the arguments
+	// Looping over the arguments
 	for i, arg := range args[2:] {
 		if arg == "--date" {
 			dateFound = true
-			continue //set dateFound to true so dateString gets the next arg
+			continue // Set dateFound to true so dateString gets the next arg
 		}
-
 		if dateFound {
 			dateString = arg
-			break //date is the last argument
+			break // Date is the last argument
 		}
-
 		if i > 0 {
 			TaskTitle.WriteString(" ")
 		}
@@ -57,33 +49,36 @@ func New(args []string) {
 		return
 	}
 
-	date, err := time.Parse("01/02/06", dateString)
+	//validations
+	date, err := time.Parse("1/2/06", dateString)
 	if err != nil {
-		fmt.Printf(`Date input "%s" is invalid, correct format: day/month/year (01/02/06)`, dateString)
+		fmt.Printf(`Date input "%s" is invalid, correct format: month/day/year (01/2/06)`, dateString)
 		return
 	}
-
 	timestamp := date.Unix()
 
-	//set newTask
+	newTaskTitle := TaskTitle.String()
+	for _, task := range actualTasks {
+		if task.Title == newTaskTitle {
+			fmt.Printf("Error: A task with the title \"%s\" already exists\n", newTaskTitle)
+			return
+		}
+	}
+
+	// Set newTask
 	newTask := models.Task{
 		Id:    lastTaskId + 1,
-		Title: TaskTitle.String(),
+		Title: newTaskTitle,
 		Stamp: timestamp,
 		Done:  false,
 	}
+
 	newTasks := append(actualTasks, newTask)
-	jsonTasks, err := json.Marshal(newTasks)
+	utils.SaveTasks(newTasks)
 	if err != nil {
-		fmt.Println("Error marshaling task to JSON:", err)
+		fmt.Println("Error saving new task: ", err)
 		return
 	}
 
-	err = os.WriteFile("tasks.json", jsonTasks, 0644)
-	if err != nil {
-		fmt.Println("Error writing tasks to file:", err)
-		return
-	}
-
-	fmt.Printf(`new task "%s, Date: %d" added successfully`, TaskTitle.String(), timestamp)
+	fmt.Printf(`new task "%s, Date: %d" added successfully`, newTaskTitle, timestamp)
 }

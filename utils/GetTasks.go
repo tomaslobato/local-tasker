@@ -2,19 +2,21 @@ package utils
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"fmt"
+	"os"
 
 	"github.com/tomaslobato/local-tasker/models"
 )
 
-func GetTasks() ([]models.Task, error) {
-	file, err := ioutil.ReadFile("tasks.json")
+func GetTasks() []models.Task {
+	file, err := os.ReadFile("tasks.json")
 
 	var tasks []models.Task
 	err = json.Unmarshal(file, &tasks)
 	if err != nil {
-		return nil, err
+		fmt.Println("error getting tasks:", err)
+		return nil
 	}
 
-	return tasks, nil
+	return tasks
 }
