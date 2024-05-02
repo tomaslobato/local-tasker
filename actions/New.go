@@ -20,7 +20,7 @@ func New(args []string) {
 
 	if len(args) < 3 {
 		fmt.Println(`Please use lt new <task title> --date <01/02/06>. 
-	You can also use --date today/tomorrow/nextweek`)
+	You can also use --date today/tomorrow`)
 		return
 	}
 
@@ -63,7 +63,7 @@ func New(args []string) {
 		date, err = time.Parse("1/2/06", dateString)
 		if err != nil {
 			fmt.Printf(`Date input "%s" is invalid, correct format: month/day/year (01/2/06).
-	You can also use --date today/tomorrow/nextweek`, dateString)
+	You can also use --date today/tomorrow`, dateString)
 			return
 		}
 	}
