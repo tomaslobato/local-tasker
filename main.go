@@ -5,15 +5,21 @@ import (
 	"os"
 
 	"github.com/fatih/color"
-	"github.com/tomaslobato/local-tasker/actions"
+	"github.com/tomaslobato/lt/actions"
 )
+
+func wrongUseMsg() {
+	fmt.Println(`Usage: [all|todos|new|check|delete|cleardone]`)
+	color.White("- White: To do")
+	color.Yellow("- Yellow: To do today")
+	color.Green("- Green: Done")
+	color.Red("- Red: Pending task")
+	fmt.Println("Note: Today's task have the date of tomorrow because they are for tomorrow and you gotta do them today.")
+}
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println(`Usage: [all|todo|new|today|done|cleardone]`)
-		color.White("- White: To do")
-		color.Red("- Red: Pending task")
-		color.Green("- Green: Done")
+		wrongUseMsg()
 		return
 	}
 
@@ -30,5 +36,7 @@ func main() {
 		actions.ClearDone()
 	case "delete":
 		actions.Delete(os.Args)
+	default:
+		wrongUseMsg()
 	}
 }

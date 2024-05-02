@@ -1,4 +1,4 @@
-module github.com/tomaslobato/local-tasker
+module github.com/tomaslobato/lt
 
 go 1.22.2
 

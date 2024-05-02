@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/tomaslobato/local-tasker/models"
+	"github.com/tomaslobato/lt/models"
 )
 
 func SaveTasks(tasks []models.Task) {

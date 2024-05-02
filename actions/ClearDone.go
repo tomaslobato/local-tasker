@@ -1,8 +1,8 @@
 package actions
 
 import (
-	"github.com/tomaslobato/local-tasker/models"
-	"github.com/tomaslobato/local-tasker/utils"
+	"github.com/tomaslobato/lt/models"
+	"github.com/tomaslobato/lt/utils"
 )
 
 func ClearDone() {

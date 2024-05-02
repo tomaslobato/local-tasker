@@ -3,7 +3,7 @@ package actions
 import (
 	"strings"
 
-	"github.com/tomaslobato/local-tasker/utils"
+	"github.com/tomaslobato/lt/utils"
 )
 
 func Check(args []string) {

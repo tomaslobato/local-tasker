@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/tomaslobato/local-tasker/models"
-	"github.com/tomaslobato/local-tasker/utils"
+	"github.com/tomaslobato/lt/models"
+	"github.com/tomaslobato/lt/utils"
 )
 
 func Delete(args []string) {
@@ -34,5 +34,5 @@ func Delete(args []string) {
 	}
 
 	utils.SaveTasks(updatedTasks)
-	fmt.Println("deleted:", taskTitle)
+	fmt.Printf("%s Deleted\n", taskTitle)
 }
